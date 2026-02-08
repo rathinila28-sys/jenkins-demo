@@ -4,27 +4,32 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checkout from Git Jenkinsfile'
+                echo 'Checking out code from Git'
             }
         }
+
         stage('Build') {
             steps {
-                echo 'Build stage from Jenkinsfile'
+                echo 'Compiling Java code'
+                bat 'javac Hello.java'
             }
         }
+
         stage('Test') {
             steps {
-                echo 'Test stage from Jenkinsfile'
+                echo 'Running Java program'
+                bat 'java Hello'
             }
         }
     }
 
     post {
         success {
-            echo 'Build Successful'
+            echo 'CI Pipeline Successful'
+            archiveArtifacts artifacts: '*.class', fingerprint: true
         }
         failure {
-            echo 'Build Failed'
+            echo 'CI Pipeline Failed'
         }
     }
 }
